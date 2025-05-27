@@ -22,8 +22,9 @@ void producer(int id , int count ){
 		int item=id*100+i;
 		buffer.push(item);
 		std::cout<<" Producer "<< id <<" produced "<< item <<"\n";
+		lock.unlock(); // added
 		cv.notify_all(); // notify consumers 
-
+	
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 
@@ -41,6 +42,7 @@ void consumer( int id , int count ){
 		int item=buffer.front();
 		buffer.pop();
 		std::cout<<" Consumer "<<id <<" consumed: "<<item<<" \n ";
+		lock.unlock(); 
 		cv.notify_all(); // notify producers
 	        std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
